@@ -11,6 +11,7 @@ export function LoginView({ onLogin }: LoginViewProps) {
     const [role, setRole] = useState<Role>("Waiter");
     const [pin, setPin] = useState<string[]>(["", "", "", ""]);
     const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false)
 
     const pinRefs = [
         useRef<HTMLInputElement>(null),
@@ -58,6 +59,7 @@ export function LoginView({ onLogin }: LoginViewProps) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
+        setIsLoading(true);
 
         const pinString = pin.join("");
         try {
@@ -69,11 +71,24 @@ export function LoginView({ onLogin }: LoginViewProps) {
             setError("Invalid username or password. Please try again.")
             setPin(["", "", "", ""]);
             pinRefs[0].current?.focus();
+        } finally {
+            setIsLoading(false)
         }
     }
 
     return (
         <div className="relative min-h-full h-full flex items-center justify-center bg-[#08090c] overflow-hidden">
+            {isLoading && (
+                <div className="absolute inset-0 bg-[#08090c]/85 backdrop-blur-sm z-50 flex items-center justify-center">
+                    <div className="flex flex-col items-center gap-4">
+                        <svg className="animate-spin h-10 w-10 text-emerald-500" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        <span className="text-gray-400 text-xs font-semibold uppercase tracking-wider animate-pulse">Verifying Credentials...</span>
+                    </div>
+                </div>
+            )}
             <details className="absolute top-4 right-4 z-20 bg-[#121318]/95 border border-[#22232a]/80 rounded-xl p-3.5 text-xs text-gray-400 w-[240px] shadow-lg group [&_summary::-webkit-details-marker]:hidden">
                 <summary className="font-bold text-white uppercase tracking-wider text-[10px] cursor-pointer list-none flex items-center justify-between outline-none select-none">
                     <span>Demo Credentials</span>

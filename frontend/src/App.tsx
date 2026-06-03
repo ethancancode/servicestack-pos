@@ -20,6 +20,7 @@ function App() {
   });
   const [activeTable, setactiveTable] = useState<number | null>(null);
   const [orders, setOrders] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [view, setView] = useState<"waiter" | "kitchen">(() => {
     const savedView = localStorage.getItem("current_view") as "waiter" | "kitchen" | null;
     return savedView || "waiter";
@@ -56,8 +57,11 @@ function App() {
     try {
       const data = await api.getOrders();
       setOrders(data);
+      setIsLoading(true);
     } catch (error) {
       console.error("Failed to load live orders:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -154,6 +158,17 @@ function App() {
           />
         )}
       </div>
+      {isLoading && (
+        <div className="fixed inset-0 bg-[#08090c]/80 backdrop-blur-sm z-[9999] flex items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <svg className="animate-spin h-12 w-12 text-emerald-500" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            <span className="text-gray-400 text-sm font-medium animate-pulse">Loading data...</span>
+          </div>
+        </div>
+      )}
     </AuthContext.Provider>
   );
 }

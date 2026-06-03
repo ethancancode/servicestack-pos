@@ -1,6 +1,8 @@
-# ServiceStack - Restaurant POS App 
+# ServiceStack - Restaurant POS App
 
 ServiceStack is a modern, fast, and feature-rich full-stack Point of Sale (POS) system designed for tablets, iPads, and mobile devices in restaurant environments. It features a responsive floor plan layout, intuitive waiter ordering workflows, role-based dashboards (Waiter, Chef, Manager), and secure JWT-based session autologout.
+
+👉 **Live Demo:** [https://servicestack-7b7z.onrender.com/](https://servicestack-7b7z.onrender.com/)
 
 ---
 

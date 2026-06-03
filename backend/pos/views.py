@@ -14,8 +14,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 class TableViewSet(viewsets.ModelViewSet):
-    queryset = Table.objects.all()
+    queryset = Table.objects.all().order_by('table_number')
     serializer_class = TableSerializer
+
 
 class MenuItemViewSet(viewsets.ModelViewSet):
     queryset = MenuItem.objects.all()
